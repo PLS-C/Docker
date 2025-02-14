@@ -1,0 +1,112 @@
+Installing CUDA Driver in Docker for GPU Usage
+  Step 1: Remove Docker and Ubuntu (Optional)
+    In case the CUDA driver installation on Ubuntu was unsuccessful, follow these steps to remove Docker and Ubuntu before reinstalling.
+    Step 1.1: Launch PowerShell or Command Prompt in Administrator mode.
+    Step 1.2: Remove Docker:
+      wsl --unregister docker-desktop
+      wsl --unregister docker-desktop-data
+    Step 1.3: Uninstall Docker Desktop:
+      Navigate to: Control Panel > Programs > Programs and Features > Docker Desktop > Uninstall
+    Step 1.4: Remove Ubuntu:
+      Navigate to: Settings > Apps > Installed Apps
+    Step 1.5: Remove all files and settings (Optional):
+      Launch Windows PowerShell in Administrator mode.
+      Remove Ubuntu data:
+      wsl --unregister <distro_name>  # Replace <distro_name> with the installed Ubuntu name  
+      Remove WSL:
+      dism.exe /online /disable-feature /featurename:Microsoft-Windows-Subsystem-Linux /norestart  
+      Remove Hyper-V:
+      dism.exe /online /disable-feature /featurename:Microsoft-Hyper-V-All /norestart  
+    Step 1.6: Verify that the software was removed:
+      Check Docker:
+      docker --version
+      If it shows: "docker: The term 'docker' is not recognized...", then Docker was successfully removed.
+      Check WSL:
+      wsl --list
+      If it shows: "Windows Subsystem for Linux has no installed distributions...", then Linux was successfully removed.
+    Step 2: Verify That Virtualization Is Enabled
+      2.1 Open Task Manager and navigate to: Performance > CPU
+      2.2 Look for Virtualization status.
+      2.3 If Virtualization is not enabled, you can enable it in the BIOS.
+    Step 3: Download and Install Docker Desktop
+      Step 3.1: Download Docker Desktop (Windows AMD64)
+        https://www.docker.com/products/docker-desktop/
+      Step 3.2: Install Docker Desktop.
+      reboot the device
+      Step 3.3: Launch Docker Desktop 
+      Step 3.4: Verify WSL installation:
+        wsl --list --verbose
+        If it shows: "docker-desktop Running 2", then Docker was successfully installed and is using WSL 2
+  
+  Step 4: Install Ubuntu
+    
+    Step 4.1: Install Ubuntu using:
+      wsl --install -d Ubuntu-22.04
+      After Ubuntu is installed, the Windows PowerShell terminal will switch to Ubuntu, meaning you are now using the Ubuntu terminal.
+  
+    Step 4.2: Define a username.
+      The username cannot be "Ubuntu," but other names can be used.
+    
+    Step 4.3: Define a password.
+    
+    Step 4.4: Exit Ubuntu:
+      exit
+      The Ubuntu terminal will switch back to Windows PowerShell.
+   
+    Step 4.5: Verify WSL installation:
+      wsl --version
+    
+    Step 4.6: Verify Ubuntu installation using Windows PowerShell:
+      wsl --list --verbose
+      If it shows: "Ubuntu-22.04 state=stopped version=2", then Ubuntu was successfully installed.
+    
+    Step 4.7: Launch Ubuntu via the app icon.
+      If you check Ubuntu status using Windows PowerShell after opening the Ubuntu terminal, Ubuntu's state should be "running."
+    
+    Step 4.8: Set Ubuntu-22.04 as the default Linux distribution in Windows PowerShell (Optional).
+      This ensures that when calling ubuntu, it refers to Ubuntu-22.04.
+      This is useful when multiple Ubuntu versions are installed.
+      wsl --set-default Ubuntu-22.04
+    
+    Step 4.9: Check the Ubuntu version:
+      lsb_release -a
+   
+    Step 4.10: Update and upgrade Ubuntu:
+      sudo apt update && sudo apt upgrade -y
+  Step 5: Check the NVIDIA driver in Ubuntu
+    This device had NVIDIA Geforce RTX 3060 and CUDA version 12.6
+    I had install NVIDIA and CUDA driver on window os before install the docker and ubuntu
+  Step 6: Install CUDA Toolkit in ubuntu
+    Step 6.1: check the CUDA toolkit installation
+    nvcc --version
+    If it show: "Commond 'nvcc not found, but can be installed with.." thus CUDA Toolkit is not install in ubuntu
+    Step 6.2: Instlall the CUDA toolkit 
+
+      wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+      sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+      wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+      sudo gpg --dearmor -o /usr/share/keyrings/cuda-archive-keyring.gpg 3bf863cc.pub
+      sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /"
+       
+      It has some error as the repositoty ... is not signed
+      I will try update and install cuda toolkit and ignore the error
+
+      sudo apt update
+
+      sudo apt install -y cuda-11-8
+
+      It can not install cuda toolkit
+
+      I will try add the new GPG Key
+
+      sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+
+      Update repository
+
+      sudo apt update
+
+      Check Repository
+
+      cat /etc/apt/sources.list.d/*.list
+
+      It should to had "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /
