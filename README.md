@@ -1,12 +1,19 @@
-Installing CUDA Driver in Docker for GPU Usage
-  Step 1: Remove Docker and Ubuntu (Optional)
-    In case the CUDA driver installation on Ubuntu was unsuccessful, follow these steps to remove Docker and Ubuntu before reinstalling.
-    Step 1.1: Launch PowerShell or Command Prompt in Administrator mode.
-    Step 1.2: Remove Docker:
-      wsl --unregister docker-desktop
-      wsl --unregister docker-desktop-data
-    Step 1.3: Uninstall Docker Desktop:
-      Navigate to: Control Panel > Programs > Programs and Features > Docker Desktop > Uninstall
+# Installing CUDA Driver in Docker for GPU Usage
+
+  ## Step 1: Remove Docker and Ubuntu (Optional)
+
+  In case the CUDA driver installation on Ubuntu was unsuccessful, follow these steps to remove Docker and Ubuntu before reinstalling.
+    
+  Step 1.1: Launch PowerShell or Command Prompt in Administrator mode.
+  
+  Step 1.2: Remove Docker:
+  
+    wsl --unregister docker-desktop
+    wsl --unregister docker-desktop-data
+    
+  Step 1.3: Uninstall Docker Desktop:
+  
+  Navigate to: Control Panel > Programs > Programs and Features > Docker Desktop > Uninstall
     Step 1.4: Remove Ubuntu:
       Navigate to: Settings > Apps > Installed Apps
     Step 1.5: Remove all files and settings (Optional):
